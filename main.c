@@ -14,24 +14,30 @@ uint16_t FlatYearNumber;
 
 int main(void)
 {
-    stCurrentTime.year = 2025;
-    stCurrentTime.month = 4;
-    stCurrentTime.date = 3;
-    stCurrentTime.hour = 10;
-    stCurrentTime.minute = 29;
-    stCurrentTime.second = 30;
-
-    u32UnixTimeStamp = utcToUnix(&stCurrentTime);
-    printf("unix timestamp: %d \n", u32UnixTimeStamp);
-
-    u32UnixTimeStamp += 3600; //test: set 3600 for 1 hour
-	unixToUtc(u32UnixTimeStamp);
-    printf("UTC: %d-%d-%d %d:%d:%d \n", UtcTime.year, UtcTime.month, UtcTime.date, UtcTime.hour, UtcTime.minute, UtcTime.second);
+    // u32UnixTimeStamp += 3600; //test: set 3600 for 1 hour
+	// unixToUtc(u32UnixTimeStamp);
+    // printf("UTC: %d-%d-%d %d:%d:%d \n", UtcTime.year, UtcTime.month, UtcTime.date, UtcTime.hour, UtcTime.minute, UtcTime.second);
     
     //printf("Unix TimeStamp: \n");
     //scanf("%d", &u32UnixTimeStamp);
     //unixToUtc(u32UnixTimeStamp);
     //printf("UTC: %d-%d-%d %d:%d:%d \n", UtcTime.year, UtcTime.month, UtcTime.date, UtcTime.hour, UtcTime.minute, UtcTime.second);
+
+    time_t current_time;
+    current_time = time(NULL);
+    struct tm *tm_local = localtime(&current_time);
+    printf("Current local date time : %d-%d-%d %d:%d:%d \n", tm_local -> tm_year + 1900, tm_local->tm_mon + 1, tm_local->tm_mday, tm_local -> tm_hour, tm_local -> tm_min, tm_local -> tm_sec);
+
+    stCurrentTime.year = tm_local->tm_year + 1900; //2025;
+    stCurrentTime.month = tm_local->tm_mon + 1; //4
+    stCurrentTime.date = tm_local->tm_mday; //3;
+    stCurrentTime.hour = tm_local->tm_hour; //10
+    stCurrentTime.minute = tm_local->tm_min;
+    stCurrentTime.second = tm_local->tm_sec;
+
+    u32UnixTimeStamp = utcToUnix(&stCurrentTime);
+    printf("unix timestamp: %d \n", u32UnixTimeStamp);
+    return(0);
 }
 
 /*
